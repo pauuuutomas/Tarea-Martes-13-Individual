@@ -66,7 +66,10 @@ export async function authRoutes(app: FastifyInstance) {
         password: string;
       };
 
-      const usuario = await usuariosRepo.verificarCredenciales(username, password);
+      const usuario = await usuariosRepo.verificarCredenciales(
+        username,
+        password,
+      );
 
       return reply.code(200).send({
         mensaje: "Inicio de sesión correcto.",
@@ -76,35 +79,13 @@ export async function authRoutes(app: FastifyInstance) {
   );
 
   app.get(
-    "/me",
-    {
-      schema: {
-        summary: "Obtener los datos del usuario autenticado",
-        description:
-          "Valida las credenciales HTTP Basic enviadas en Authorization y devuelve los datos públicos del usuario.",
-        security: [{ basicAuth: [] }],
-        response: {
-          200: UsuarioSchema,
-          401: ErrorResponseSchema,
-          500: ErrorResponseSchema,
-        },
-      },
-    },
-    async (request) => {
-      const authHeader = request.headers.authorization;
-      const { username, password } = obtenerCredencialesBasicas(authHeader);
-
-      return usuariosRepo.verificarCredenciales(username, password);
-    },
-  );
-
-  app.get(
     "/usuarios/me",
     {
       schema: {
         summary: "Obtener usuario autenticado",
+        //Representa la consulta de los datos del usuario autenticado, sin requerir un token. Se utiliza para validar las credenciales básicas en cada petición.
         description:
-          "Alias para consultar los datos públicos del usuario autenticado mediante HTTP Basic.",
+          "Devuelve los datos públicos del usuario autenticado, sin requerir un token. Se utiliza para validar las credenciales básicas en cada petición.",
         security: [{ basicAuth: [] }],
         response: {
           200: UsuarioSchema,
