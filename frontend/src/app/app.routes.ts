@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Pantalla } from './pantalla/pantalla';
 import { UsuariosLista } from './usuarios-lista/usuarios-lista';
 import { UsuarioCrear } from './usuario-crear/usuario-crear';
+import { TareasLista } from './tareas/tareas-lista/tareas-lista';
 
 export const appRoutes: Routes = [
   {
@@ -18,11 +19,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'tareas',
-    component: Pantalla,
-    data: {
-      titulo: 'Tareas',
-      descripcion: 'Pantalla para consultar el listado de tareas.',
-    },
+    component: TareasLista,
   },
   {
     path: 'tareas/crear',
