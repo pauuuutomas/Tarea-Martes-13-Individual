@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Pantalla } from './pantalla/pantalla';
 import { UsuariosLista } from './usuarios-lista/usuarios-lista';
+import { UsuarioDetalle } from './usuario-detalle/usuario-detalle';
 
 export const appRoutes: Routes = [
   {
@@ -17,11 +18,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'usuarios/:id_usuario',
-    component: Pantalla,
-    data: {
-      titulo: 'Detalle de usuario',
-      descripcion: 'Pantalla para consultar el detalle de un usuario.',
-    },
+    component: UsuarioDetalle,
   },
   {
     path: 'tareas',
