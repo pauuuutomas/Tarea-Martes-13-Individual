@@ -13,6 +13,7 @@ import {
   NotAuthorizedError,
   NotFoundError,
   UnAuthenticatedError,
+  transformarErrorPostgres,
 } from "./errors/response.errors.ts";
 
 const app = Fastify({
@@ -34,7 +35,19 @@ app.setErrorHandler((error, request, reply) => {
       })),
     });
   }
+  if (
+    error &&
+    typeof error === "object" &&
+    "code" in error &&
+    typeof error.code === "string" &&
+    /^\d{5}$/.test(error.code)
+  ) {
+    const errorTransformado = transformarErrorPostgres(error as any);
 
+    return reply
+      .code(errorTransformado.statusCode ?? 500)
+      .send({ mensaje: errorTransformado.message });
+  }
   if (
     error instanceof BadRequestError ||
     error instanceof ConflictError ||

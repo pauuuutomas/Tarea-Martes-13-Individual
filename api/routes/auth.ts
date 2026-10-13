@@ -85,7 +85,7 @@ export async function authRoutes(app: FastifyInstance) {
         summary: "Obtener usuario autenticado",
         //Representa la consulta de los datos del usuario autenticado, sin requerir un token. Se utiliza para validar las credenciales básicas en cada petición.
         description:
-          "Devuelve los datos públicos del usuario autenticado, sin requerir un token. Se utiliza para validar las credenciales básicas en cada petición.",
+          "Devuelve los datos públicos del usuario autenticado mediante HTTP Basic.",
         security: [{ basicAuth: [] }],
         response: {
           200: UsuarioSchema,
