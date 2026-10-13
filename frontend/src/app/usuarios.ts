@@ -3,6 +3,7 @@ export interface Usuario {
   username: string;
   nombres: string;
   apellidos: string;
+  fecha_nacimiento: string;
   grupos: string[];
   activo: boolean;
 }
@@ -13,6 +14,7 @@ export const usuarios: Usuario[] = [
     username: 'usuario1',
     nombres: 'Ana',
     apellidos: 'García',
+    fecha_nacimiento: '1995-04-12',
     grupos: ['user'],
     activo: true,
   },
@@ -21,6 +23,7 @@ export const usuarios: Usuario[] = [
     username: 'usuario2',
     nombres: 'Luis',
     apellidos: 'Pérez',
+    fecha_nacimiento: '1988-09-23',
     grupos: ['admin', 'user'],
     activo: true,
   },
@@ -29,6 +32,7 @@ export const usuarios: Usuario[] = [
     username: 'usuario3',
     nombres: 'Marta',
     apellidos: 'López',
+    fecha_nacimiento: '2001-01-08',
     grupos: ['user'],
     activo: false,
   },
