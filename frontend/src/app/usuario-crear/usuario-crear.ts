@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { usuarios } from '../usuarios';
+import { UsuarioService } from '../usuarios/usuario.service';
 
 @Component({
   selector: 'app-usuario-crear',
@@ -170,6 +170,7 @@ import { usuarios } from '../usuarios';
   `,
 })
 export class UsuarioCrear {
+  private readonly usuarioService = inject(UsuarioService);
   protected username = '';
   protected nombres = '';
   protected apellidos = '';
@@ -187,10 +188,7 @@ export class UsuarioCrear {
       return;
     }
 
-    const idUsuario = Math.max(0, ...usuarios.map((usuario) => usuario.id_usuario)) + 1;
-
-    usuarios.push({
-      id_usuario: idUsuario,
+    this.usuarioService.crear({
       username: this.username,
       nombres: this.nombres,
       apellidos: this.apellidos,

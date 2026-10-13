@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { usuarios } from '../usuarios';
+import { UsuarioService } from '../usuarios/usuario.service';
 
 @Component({
   selector: 'app-usuarios-lista',
@@ -99,5 +99,6 @@ import { usuarios } from '../usuarios';
   `,
 })
 export class UsuariosLista {
-  protected readonly usuarios = usuarios;
+  private readonly usuarioService = inject(UsuarioService);
+  protected readonly usuarios = this.usuarioService.obtenerTodos();
 }

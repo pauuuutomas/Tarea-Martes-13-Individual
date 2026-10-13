@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Usuario, usuarios } from '../usuarios';
+import { Usuario, UsuarioService } from '../usuarios/usuario.service';
 
 @Component({
   selector: 'app-usuario-detalle',
@@ -68,7 +68,8 @@ import { Usuario, usuarios } from '../usuarios';
 })
 export class UsuarioDetalle {
   private readonly route = inject(ActivatedRoute);
-  protected readonly usuario: Usuario | undefined = usuarios.find(
-    (item) => item.id_usuario === Number(this.route.snapshot.paramMap.get('id_usuario')),
+  private readonly usuarioService = inject(UsuarioService);
+  protected readonly usuario: Usuario | undefined = this.usuarioService.obtenerPorId(
+    Number(this.route.snapshot.paramMap.get('id_usuario')),
   );
 }
