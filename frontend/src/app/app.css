@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  color: #1f2937;
+  font-family: Arial, sans-serif;
+}
+
+.site-header {
+  background: #1d4ed8;
+  padding: 1rem 2rem;
+}
+
+.main-navigation {
+  display: flex;
+  gap: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.main-navigation a {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.main-navigation a:hover,
+.main-navigation a.active {
+  text-decoration: underline;
+}
+
+.page-content {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
