@@ -25,7 +25,7 @@ export interface NuevaTarea {
 }
 
 export type CambiosTarea = Partial<
-  Pick<Tarea, 'grupo' | 'titulo' | 'descripcion' | 'prioridad'>
+  Pick<Tarea, 'id_creador' | 'grupo' | 'titulo' | 'descripcion' | 'prioridad'>
 >;
 
 @Injectable({
@@ -95,7 +95,7 @@ export class TareaService {
     return tarea;
   }
 
-  actualizar(idTarea: number, cambios: CambiosTarea): Tarea | undefined {
+  update(idTarea: number, cambios: CambiosTarea): Tarea | undefined {
     const tarea = this.obtenerPorId(idTarea);
     if (!tarea) {
       return undefined;
@@ -103,6 +103,10 @@ export class TareaService {
 
     Object.assign(tarea, cambios);
     return tarea;
+  }
+
+  actualizar(idTarea: number, cambios: CambiosTarea): Tarea | undefined {
+    return this.update(idTarea, cambios);
   }
 
   eliminar(idTarea: number): boolean {

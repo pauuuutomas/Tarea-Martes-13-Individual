@@ -3,6 +3,7 @@ import { Pantalla } from './pantalla/pantalla';
 import { UsuariosLista } from './usuarios-lista/usuarios-lista';
 import { UsuarioCrear } from './usuario-crear/usuario-crear';
 import { TareasLista } from './tareas/tareas-lista/tareas-lista';
+import { TareaCrear } from './tareas/tarea-crear/tarea-crear';
 
 export const appRoutes: Routes = [
   {
@@ -23,19 +24,11 @@ export const appRoutes: Routes = [
   },
   {
     path: 'tareas/crear',
-    component: Pantalla,
-    data: {
-      titulo: 'Crear tarea',
-      descripcion: 'Pantalla para crear una tarea.',
-    },
+    component: TareaCrear,
   },
   {
     path: 'tareas/:id_tarea',
-    component: Pantalla,
-    data: {
-      titulo: 'Detalle de tarea',
-      descripcion: 'Pantalla para consultar el detalle de una tarea.',
-    },
+    component: TareaCrear,
   },
   { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
   { path: '**', redirectTo: 'usuarios' },
