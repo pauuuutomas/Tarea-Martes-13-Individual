@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { Pantalla } from './pantalla/pantalla';
 import { UsuariosLista } from './usuarios-lista/usuarios-lista';
-import { UsuarioDetalle } from './usuario-detalle/usuario-detalle';
 import { UsuarioCrear } from './usuario-crear/usuario-crear';
 
 export const appRoutes: Routes = [
@@ -15,7 +14,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'usuarios/:id_usuario',
-    component: UsuarioDetalle,
+    component: UsuarioCrear,
   },
   {
     path: 'tareas',

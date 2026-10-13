@@ -26,6 +26,7 @@ import { UsuarioService } from '../usuarios/usuario.service';
               <th>Grupos</th>
               <th>Estado</th>
               <th>Detalle</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -41,6 +42,12 @@ import { UsuarioService } from '../usuarios/usuario.service';
                   <a [routerLink]="['/usuarios', usuario.id_usuario]">
                     Ver detalle
                   </a>
+                </td>
+                <td class="acciones">
+                  <a [routerLink]="['/usuarios', usuario.id_usuario]">Editar</a>
+                  <button type="button" (click)="eliminarUsuario(usuario.id_usuario)">
+                    Eliminar
+                  </button>
                 </td>
               </tr>
             }
@@ -93,6 +100,22 @@ import { UsuarioService } from '../usuarios/usuario.service';
       text-align: left;
     }
 
+    .acciones {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .acciones button {
+      padding: 0;
+      border: 0;
+      background: none;
+      color: #1d4ed8;
+      font: inherit;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
     th {
       background: #f3f4f6;
     }
@@ -100,5 +123,15 @@ import { UsuarioService } from '../usuarios/usuario.service';
 })
 export class UsuariosLista {
   private readonly usuarioService = inject(UsuarioService);
-  protected readonly usuarios = this.usuarioService.obtenerTodos();
+  protected usuarios = this.usuarioService.obtenerTodos();
+
+  protected eliminarUsuario(idUsuario: number): void {
+    const confirmar = window.confirm('¿Querés eliminar este usuario?');
+    if (!confirmar) {
+      return;
+    }
+
+    this.usuarioService.eliminar(idUsuario);
+    this.usuarios = this.usuarioService.obtenerTodos();
+  }
 }

@@ -1,22 +1,28 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { UsuarioService } from '../usuarios/usuario.service';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Usuario, UsuarioService } from '../usuarios/usuario.service';
 
 @Component({
   selector: 'app-usuario-crear',
   imports: [FormsModule, RouterLink],
   template: `
     <section>
-      <h1>Crear usuario</h1>
-
-      @if (creado) {
-        <p role="status">El usuario se creó correctamente.</p>
+      @if (idUsuario !== undefined && !usuario) {
+        <h1>Usuario no encontrado</h1>
+        <p>No existe un usuario con el ID indicado.</p>
+        <a class="boton" routerLink="/usuarios">Volver al listado</a>
+      } @else if (guardado) {
+        <p role="status">
+          {{ idUsuario === undefined ? 'El usuario se creó correctamente.' : 'Los cambios se guardaron correctamente.' }}
+        </p>
         <a class="boton" routerLink="/usuarios">Volver al listado</a>
       } @else {
+      <h1>{{ idUsuario === undefined ? 'Crear usuario' : 'Editar usuario' }}</h1>
+
         <form
           #formulario="ngForm"
-          (ngSubmit)="crearUsuario(formulario)"
+          (ngSubmit)="guardarUsuario(formulario)"
           novalidate
         >
           <label for="username">Nombre de usuario</label>
@@ -100,7 +106,9 @@ import { UsuarioService } from '../usuarios/usuario.service';
           }
 
           <div class="acciones">
-            <button class="boton" type="submit">Crear usuario</button>
+            <button class="boton" type="submit">
+              {{ idUsuario === undefined ? 'Crear usuario' : 'Guardar cambios' }}
+            </button>
             <a class="boton boton-secundario" routerLink="/usuarios">
               Cancelar
             </a>
@@ -170,17 +178,23 @@ import { UsuarioService } from '../usuarios/usuario.service';
   `,
 })
 export class UsuarioCrear {
+  private readonly route = inject(ActivatedRoute);
   private readonly usuarioService = inject(UsuarioService);
-  protected username = '';
-  protected nombres = '';
-  protected apellidos = '';
-  protected fechaNacimiento = '';
-  protected grupos: string[] = [];
+  protected readonly idUsuario = this.leerIdUsuario();
+  protected readonly usuario: Usuario | undefined =
+    this.idUsuario === undefined
+      ? undefined
+      : this.usuarioService.obtenerPorId(this.idUsuario);
+  protected username = this.usuario?.username ?? '';
+  protected nombres = this.usuario?.nombres ?? '';
+  protected apellidos = this.usuario?.apellidos ?? '';
+  protected fechaNacimiento = this.usuario?.fecha_nacimiento ?? '';
+  protected grupos: string[] = [...(this.usuario?.grupos ?? [])];
   protected gruposTocados = false;
   protected enviado = false;
-  protected creado = false;
+  protected guardado = false;
 
-  protected crearUsuario(formulario: NgForm): void {
+  protected guardarUsuario(formulario: NgForm): void {
     this.enviado = true;
 
     if (formulario.invalid || this.grupos.length === 0) {
@@ -188,16 +202,26 @@ export class UsuarioCrear {
       return;
     }
 
-    this.usuarioService.crear({
-      username: this.username,
-      nombres: this.nombres,
-      apellidos: this.apellidos,
-      fecha_nacimiento: this.fechaNacimiento,
-      grupos: [...this.grupos],
-      activo: true,
-    });
+    if (this.idUsuario === undefined) {
+      this.usuarioService.crear({
+        username: this.username,
+        nombres: this.nombres,
+        apellidos: this.apellidos,
+        fecha_nacimiento: this.fechaNacimiento,
+        grupos: [...this.grupos],
+        activo: true,
+      });
+    } else {
+      this.usuarioService.actualizar(this.idUsuario, {
+        username: this.username,
+        nombres: this.nombres,
+        apellidos: this.apellidos,
+        fecha_nacimiento: this.fechaNacimiento,
+        grupos: [...this.grupos],
+      });
+    }
 
-    this.creado = true;
+    this.guardado = true;
   }
 
   protected cambiarGrupo(grupo: 'user' | 'admin', evento: Event): void {
@@ -209,5 +233,15 @@ export class UsuarioCrear {
     } else if (!seleccionado) {
       this.grupos = this.grupos.filter((grupoActual) => grupoActual !== grupo);
     }
+  }
+
+  private leerIdUsuario(): number | undefined {
+    const parametro = this.route.snapshot.paramMap.get('id_usuario');
+    if (parametro === null) {
+      return undefined;
+    }
+
+    const idUsuario = Number(parametro);
+    return Number.isInteger(idUsuario) && idUsuario > 0 ? idUsuario : -1;
   }
 }
