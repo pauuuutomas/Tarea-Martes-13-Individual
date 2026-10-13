@@ -1,14 +1,11 @@
 import { Routes } from '@angular/router';
 import { Pantalla } from './pantalla/pantalla';
+import { UsuariosLista } from './usuarios-lista/usuarios-lista';
 
 export const appRoutes: Routes = [
   {
     path: 'usuarios',
-    component: Pantalla,
-    data: {
-      titulo: 'Usuarios',
-      descripcion: 'Pantalla para consultar el listado de usuarios.',
-    },
+    component: UsuariosLista,
   },
   {
     path: 'usuarios/crear',
